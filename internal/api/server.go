@@ -37,10 +37,6 @@ func (a *App) SetApi() {
 
 	protectedApi := a.routerApi.Group("/api", a.CheckAuth())
 
-	protectedApi.Get("/hello", func(ctx *fiber.Ctx) error {
-		return ctx.SendString(`<h1>Hello</h1>`)
-	})
-
 	protectedApi.Get("/account", func(c *fiber.Ctx) error {
 
 		val := c.Locals("claims")
@@ -50,8 +46,6 @@ func (a *App) SetApi() {
 		if !ok {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "type conversion error"})
 		}
-
-		fmt.Printf("%#v", v)
 
 		owner := fmt.Sprintf("<h3>Account owner - %s</h3>", v.Name)
 		role := fmt.Sprintf("<h3>Account role - %s</h3>", v.Role)
